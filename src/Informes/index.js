@@ -18,12 +18,13 @@ export default Informe;
 
 const styles = StyleSheet.create({
     item: {
-      backgroundColor: '#3EB489',
+      backgroundColor: 'darkslategrey',
       padding: 15,
       marginVertical: 3,
       marginHorizontal: 10,
     },
     title: {
       fontSize: 18,
+      color: '#fff'
     },
   });
