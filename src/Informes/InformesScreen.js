@@ -7,14 +7,14 @@ class InformesScreen extends Component{
   constructor(props){
     super(props)
     this.state = { 
-      filmes: []
+      informes: []
     }
   }
   
   async componentDidMount(){
     const response = await api.get('informes/1')
     this.setState({
-      filmes: response.data
+      informes: response.data
     })
   }
 
@@ -22,7 +22,7 @@ class InformesScreen extends Component{
     return(
       <SafeAreaView style={styles.container}>
           <FlatList style={styles.item}
-            data={this.state.filmes}
+            data={this.state.informes}
             keyExtractor={item => item.id.toString()}
             renderItem={ ({item}) => <Informe data={item} /> }
           />
