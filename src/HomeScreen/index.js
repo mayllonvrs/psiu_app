@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
+
+    if(!(typeof(route.params?.morador) === 'undefined')){
+      console.log(route.params?.morador)
+    }
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Pressable 

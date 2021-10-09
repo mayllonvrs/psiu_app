@@ -22,7 +22,8 @@ class Morador extends Component{
             estado_civil: "",
             raca: "",
             bairro_comunidade: "",
-            comunidades: []
+            comunidades: [],
+            morador: {}
             
         }
         const { navigation } = this.props;
@@ -82,14 +83,16 @@ class Morador extends Component{
         const response = api.post(
             'morador', data
             , config
-        ).then(function(response) {
+        ).then(
+            response => this.setState({morador: response.data}))
+        .then(() => {
             ToastAndroid.showWithGravity(   
                 "Cadastro realizado com sucesso", 
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
             )
-            
-        }).then(() => this.props.navigation.navigate("PSIU"))
+        }
+        ).then(() => this.props.navigation.navigate("PSIU", {morador: this.state.morador}))
         .catch(function(error) {
             ToastAndroid.showWithGravity(   
                 "CPF já cadastrado", 
