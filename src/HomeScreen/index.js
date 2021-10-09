@@ -40,7 +40,7 @@ export default function HomeScreen({ navigation }) {
       paddingHorizontal: 32,
       borderRadius: 4,
       elevation: 3,
-      backgroundColor: 'darkslategrey',
+      backgroundColor: 'black',
       width: 350,
       marginTop: 10,
       height: 80,

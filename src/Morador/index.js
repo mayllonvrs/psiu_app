@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, View } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from "date-fns";
 import RNPickerSelect from "react-native-picker-select";
 import api from '../services/api';
-import QueryString from "qs";
+import { Icon } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 
 var width = Dimensions.get('window').width;
 
 class Morador extends Component{
-
 
     constructor(props){
         super(props)
@@ -25,7 +25,9 @@ class Morador extends Component{
             comunidades: []
             
         }
-      }
+        const { navigation } = this.props;
+    }
+    
 
     async componentDidMount(){
         const response = await api.get('comunidades')
@@ -54,7 +56,7 @@ class Morador extends Component{
     showDate = () => {
         if(this.state.dateSelected == true){
             return format(this.state.date, "dd/mm/yyyy");
-        }else { return "" } 
+        }else { return "Selecione a sua data de nascimento" } 
     }
 
     handleCpf = (text) => {
@@ -81,91 +83,106 @@ class Morador extends Component{
             'morador', data
             , config
         ).then(function(response) {
-            console.log(response.data);
-        })
+            ToastAndroid.showWithGravity(   
+                "Cadastro realizado com sucesso", 
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+            )
+            
+        }).then(() => this.props.navigation.navigate("PSIU"))
         .catch(function(error) {
-            console.log(error.response);
-        });
+            ToastAndroid.showWithGravity(   
+                "CPF já cadastrado", 
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+            )
+        }).then(() => this.props.navigation.navigate("PSIU"));
 
     }
 
     render(){
         return (
-            <SafeAreaView>
-                <View style={styles.container}>
-                    <Text style={styles.labelInput} >CPF</Text>
-                    <TextInput keyboardType = 'numeric'
-                        placeholder = 'Digite seu CPF'
-                        onChangeText = {this.handleCpf}
-                    />
-                    <Text style={styles.labelInput}>Data de Nascimento</Text>
-                    <Text>{ this.showDate() }</Text>
-                    <View>
-                        <Pressable style={styles.button} onPress={this.showDatepicker}>
-                            <Text style={styles.text}>Selecione sua data de nascimento</Text>
+            <SafeAreaView style={styles.container}>
+                <Text style={styles.labelInput} >CPF</Text>
+                <TextInput 
+                    keyboardType = 'numeric'
+                    placeholder = 'Digite seu CPF'
+                    onChangeText = {this.handleCpf}
+                />
+                <Text style={styles.labelInput} onPress={this.showDatepicker}>Data de Nascimento</Text>
+                <View style={{flexDirection:"row", alignItems: "baseline"}}>
+                    <View style={{flex:7}}>
+                        <Text>{ this.showDate() }</Text>
+                    </View>
+                    <View style={{flex:1}}>
+                        <Pressable style={styles.calendar} onPress={this.showDatepicker}>
+                            <Icon
+                                name='calendar-outline'
+                                type='ionicon'
+                            />
                         </Pressable>
                     </View>
-                    {this.state.show && (
-                        <DateTimePicker
-                        testID="dateTimePicker"
-                        value={this.state.date}
-                        mode={this.state.mode}
-                        display="spinner"
-                        onChange={this.onChange}
-                        />
-                    )}
-                    <Text style={styles.labelInput}>Estado Civil</Text>
-                    <RNPickerSelect  
-                        placeholder={{ label: "Selecione seu estado civil", value: null }}
-                        onValueChange={(value) => this.setState({ estado_civil: value })}
-                        items={[
-                            { label: "Solteiro(a)", value: "Solteiro" },
-                            { label: "Casado(a)", value: "Casado(a)" },
-                            { label: "União Estável", value: "União Estável" },
-                            { label: "Divorciado(a)", value: "Divorciado(a)" },
-                            { label: "Viúvo(a)", value: "Viúvo(a)" },
-
-                        ]}
-                        style={{
-                            inputAndroid: {
-                            color: 'black'
-                            },
-                        }}
-                    />
-                    <Text style={styles.labelInput}>Raça</Text>
-                    <RNPickerSelect 
-                        placeholder={{ label: "Selecione sua raça", value: null }}
-                        onValueChange={(value) => this.setState({raca: value})}
-                        items={[
-                            { label: "Amarela", value: "Amarela" },
-                            { label: "Branca", value: "Branca" },
-                            { label: "Indígena", value: "Indígena" },
-                            { label: "Parda", value: "Parda" },
-                            { label: "Preta", value: "Preta" },
-                        ]}
-                        style={{
-                            inputAndroid: {
-                            color: 'black'
-                            },
-                        }}
-                    />
-                    <Text style={styles.labelInput}>Bairr / Comunidade</Text>
-                    <RNPickerSelect
-                        placeholder={{ label: "Selecione seu bairro ou comunidade", value: null }}
-                        onValueChange={(value) => this.setState({bairro_comunidade: value})}
-                        items={
-                            this.state.comunidades.map((item) => ({label: item.name, value: item.id}))
-                        }
-                        style={{
-                            inputAndroid: {
-                            color: 'black'
-                            },
-                        }}
-                    />
-                    <Pressable style={styles.button} onPress={this.onSend}>
-                        <Text style={styles.text}>Entrar</Text>
-                    </Pressable>
                 </View>
+                {this.state.show && (
+                    <DateTimePicker
+                    testID="dateTimePicker"
+                    value={this.state.date}
+                    mode={this.state.mode}
+                    display="spinner"
+                    onChange={this.onChange}
+                    />
+                )}
+                <Text style={styles.labelInput}>Estado Civil</Text>
+                <RNPickerSelect  
+                    placeholder={{ label: "Selecione seu estado civil", value: null }}
+                    onValueChange={(value) => this.setState({ estado_civil: value })}
+                    items={[
+                        { label: "Solteiro(a)", value: "Solteiro" },
+                        { label: "Casado(a)", value: "Casado(a)" },
+                        { label: "União Estável", value: "União Estável" },
+                        { label: "Divorciado(a)", value: "Divorciado(a)" },
+                        { label: "Viúvo(a)", value: "Viúvo(a)" },
+
+                    ]}
+                    style={{
+                        inputAndroid: {
+                        color: 'black'
+                        },
+                    }}
+                />
+                <Text style={styles.labelInput}>Raça</Text>
+                <RNPickerSelect 
+                    placeholder={{ label: "Selecione sua raça", value: null }}
+                    onValueChange={(value) => this.setState({raca: value})}
+                    items={[
+                        { label: "Amarela", value: "Amarela" },
+                        { label: "Branca", value: "Branca" },
+                        { label: "Indígena", value: "Indígena" },
+                        { label: "Parda", value: "Parda" },
+                        { label: "Preta", value: "Preta" },
+                    ]}
+                    style={{
+                        inputAndroid: {
+                        color: 'black'
+                        },
+                    }}
+                />
+                <Text style={styles.labelInput}>Bairr / Comunidade</Text>
+                <RNPickerSelect
+                    placeholder={{ label: "Selecione seu bairro ou comunidade", value: null }}
+                    onValueChange={(value) => this.setState({bairro_comunidade: value})}
+                    items={
+                        this.state.comunidades.map((item) => ({label: item.name, value: item.id}))
+                    }
+                    style={{
+                        inputAndroid: {
+                        color: 'black'
+                        },
+                    }}
+                />
+                <Pressable style={styles.button} onPress={this.onSend}>
+                    <Text style={styles.text}>Entrar</Text>
+                </Pressable>
             </SafeAreaView>
         )
     }
@@ -175,11 +192,12 @@ export default Morador;
 
 const styles = StyleSheet.create({
     container : {
+        padding         : 15,
         flex            : 1,
         backgroundColor : "#fff",
         alignItems      : "flex-start",
         justifyContent  : "space-evenly",
-        width           : width*0.9
+        width           : width,
     },
     labelInput:{
         fontSize: 15,
@@ -189,7 +207,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         borderBottomColor: "lightgray",
         borderBottomWidth: 1,
-        width: width*0.85,
+        width: width*0.8,
         height: 40
 
         
@@ -202,7 +220,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         elevation: 3,
         backgroundColor: 'black',
-        width: width*0.85,
+        width: width*0.90,
       },
       text: {
         fontSize: 16,

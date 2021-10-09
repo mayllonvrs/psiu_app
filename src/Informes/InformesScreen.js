@@ -12,7 +12,7 @@ class InformesScreen extends Component{
   }
   
   async componentDidMount(){
-    const response = await api.get('informes/1')
+    const response = await api.get('informes/6')
     this.setState({
       informes: response.data
     })
