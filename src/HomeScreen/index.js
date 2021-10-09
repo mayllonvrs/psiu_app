@@ -1,40 +1,60 @@
-import * as React from 'react';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Button, Pressable, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 
-export default function HomeScreen({ navigation, route }) {
+export default class Home extends Component{
 
-    if(!(typeof(route.params?.morador) === 'undefined')){
-      console.log(route.params?.morador)
+
+  constructor(props){
+    super(props)
+    this.state = { 
+      morador: this.props.route.params?.response.morador
+      
     }
+    
+    const { navigation, route } = this.props;
+}
 
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Pressable 
-          style={styles.button} 
-          onPress={() => navigation.navigate('Informes')}
-        >
-          <Text style={styles.text}>Cadastrar minha proposta</Text>
-        </Pressable>
-        <Pressable 
-          style={styles.button} 
-          onPress={() => navigation.navigate('Informes')}
-        >
-          <Text style={styles.text}>Consultar tabuleiro médio</Text>
-        </Pressable>
-        <Pressable 
-          style={styles.button} 
-          onPress={() => navigation.navigate('Informes')}
-        >
-          <Text style={styles.text}>Consultar andamento das obras</Text>
-        </Pressable>
-        <Pressable 
-          style={styles.button} 
-          onPress={() => navigation.navigate('Informes')}
-        >
-          <Text style={styles.text}>Informes</Text>
-        </Pressable>
-      </View>
-    );
+    render(){
+      return (
+        <>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={styles.title}>Comunidade</Text>
+            <Text tyle={styles.text}> {this.state.morador.comunidade.name} </Text>
+          </View>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={styles.title}>Projeto</Text>
+            <Text tyle={styles.text}> {this.state.morador.comunidade.projetos[0]?.nome_projeto} </Text>
+          </View>
+          <View style={{ flex: 6, alignItems: 'center', justifyContent: 'center' }}>
+            <Pressable 
+              style={styles.button} 
+              onPress={() => navigation.navigate('Informes')}
+            >
+              <Text style={styles.text}>Cadastrar minha proposta</Text>
+            </Pressable>
+            <Pressable 
+              style={styles.button} 
+              onPress={() => navigation.navigate('Informes')}
+            >
+              <Text style={styles.text}>Consultar tabuleiro médio</Text>
+            </Pressable>
+            <Pressable 
+              style={styles.button} 
+              onPress={() => navigation.navigate('Informes')}
+            >
+              <Text style={styles.text}>Consultar andamento das obras</Text>
+            </Pressable>
+            <Pressable 
+              style={styles.button} 
+              onPress={() => navigation.navigate('Informes')}
+            >
+              <Text style={styles.text}>Informes</Text>
+            </Pressable>
+          </View>
+        </>
+      );
+    }
   }
 
   const styles = StyleSheet.create({
@@ -57,4 +77,8 @@ export default function HomeScreen({ navigation, route }) {
       letterSpacing: 0.25,
       color: 'white',
     },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold'
+    }
   });
