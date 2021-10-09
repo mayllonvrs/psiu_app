@@ -18,7 +18,7 @@ export default Informe;
 
 const styles = StyleSheet.create({
     item: {
-      backgroundColor: 'darkslategrey',
+      backgroundColor: 'black',
       padding: 15,
       marginVertical: 3,
       marginHorizontal: 10,
