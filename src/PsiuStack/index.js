@@ -9,9 +9,9 @@ const Stack = createStackNavigator();
 
 export default function PsiuStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Cadastro">
+      <Stack.Screen name="Home" component={HomeScreen}  options={{ title: 'PSIU' }}/>
       <Stack.Screen name="Cadastro" component={Morador} />
-      <Stack.Screen name="PSIU" component={HomeScreen} />
       <Stack.Screen name="Informes" component={InformesScreen} />
       {/* <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} /> */}
