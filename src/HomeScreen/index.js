@@ -24,7 +24,7 @@ export default class Home extends Component{
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={styles.title}>Projeto</Text>
-            <Text tyle={styles.text}> {this.state.morador.comunidade.projetos[0]?.nome_projeto} </Text>
+            <Text tyle={styles.title}> {this.state.morador.comunidade.projetos[0]?.nome_projeto} </Text>
           </View>
           <View style={{ flex: 6, alignItems: 'center', justifyContent: 'center' }}>
             <Pressable 
