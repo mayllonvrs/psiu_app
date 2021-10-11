@@ -29,7 +29,7 @@ export default class Home extends Component{
             <Pressable 
               style={styles.button} 
               onPress={() => this.state.navigation.navigate('Proposta', {morador: this.state.morador})}
-            >
+              >
               <Text style={styles.text}>Cadastrar minha proposta</Text>
             </Pressable>
             <Pressable 
@@ -46,7 +46,7 @@ export default class Home extends Component{
             </Pressable>
             <Pressable 
               style={styles.button} 
-              onPress={() => this.state.navigation.navigate('Informes')}
+              onPress={() => this.state.navigation.navigate('Informes', {projeto: this.state.morador.comunidade.projetos[0].id})}
             >
               <Text style={styles.text}>Informes</Text>
             </Pressable>

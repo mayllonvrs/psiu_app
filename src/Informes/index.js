@@ -8,10 +8,11 @@ class Informes extends Component{
     this.state = { 
       informes: []
     }
+    console.log(props)
   }
   
   async componentDidMount(){
-    const response = await api.get('informes/6')
+    const response = await api.get('informes/'+this.props.route.params?.projeto)
     this.setState({
       informes: response.data
     })
