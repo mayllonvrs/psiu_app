@@ -8,11 +8,10 @@ export default class Home extends Component{
   constructor(props){
     super(props)
     this.state = { 
-      morador: this.props.route.params?.response.morador
+      morador: this.props.route.params?.response.morador,
+      navigation: this.props.navigation
       
     }
-    
-    const { navigation, route } = this.props;
 }
 
     render(){
@@ -29,25 +28,25 @@ export default class Home extends Component{
           <View style={{ flex: 6, alignItems: 'center', justifyContent: 'center' }}>
             <Pressable 
               style={styles.button} 
-              onPress={() => navigation.navigate('Informes')}
+              onPress={() => this.state.navigation.navigate('Proposta', {morador: this.state.morador})}
             >
               <Text style={styles.text}>Cadastrar minha proposta</Text>
             </Pressable>
             <Pressable 
               style={styles.button} 
-              onPress={() => navigation.navigate('Informes')}
+              onPress={() => this.state.navigation.navigate('Informes')}
             >
               <Text style={styles.text}>Consultar tabuleiro médio</Text>
             </Pressable>
             <Pressable 
               style={styles.button} 
-              onPress={() => navigation.navigate('Informes')}
+              onPress={() => this.state.navigation.navigate('Informes')}
             >
               <Text style={styles.text}>Consultar andamento das obras</Text>
             </Pressable>
             <Pressable 
               style={styles.button} 
-              onPress={() => navigation.navigate('Informes')}
+              onPress={() => this.state.navigation.navigate('Informes')}
             >
               <Text style={styles.text}>Informes</Text>
             </Pressable>
