@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet, Text, View, Image, Modal, Alert } from "react-native";
+import { Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet, Text, View, Image, Modal, Alert, ToastAndroid } from "react-native";
 import Item from "./Item"
 import { Icon } from "react-native-elements/dist/icons/Icon";
+import api from "../services/api";
 
 
 var height = Dimensions.get('window').height;
@@ -10,6 +11,7 @@ export default class Proposta extends Component{
     constructor(props){
         super(props)
         this.state = {
+            proposta: {},
             numItems: 8, 
             modalVisible: false,
             morador: this.props.route.params?.morador,
@@ -102,6 +104,43 @@ export default class Proposta extends Component{
         )
     }
 
+    onSend = () => {
+
+        var itens = ""
+        const numItens = this.state.data.length
+        this.state.data.forEach(function(item, i) {
+            itens += item.id
+            if(numItens - 1 > i)
+                itens += ","
+           
+            
+        })
+
+        var body = new FormData()
+        body.append('morador_id', this.state.morador.id)
+        body.append('projeto_id', this.state.morador.comunidade.projetos[0].id)
+        body.append('itens', itens)
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+              }
+        };
+        
+        var self = this;
+        const response = api.post(
+            'proposta', body
+            , config
+        )
+        .then(() => alert("O cadastro da sua proposta foi realizado com sucesso"))
+        .then(() => this.props.navigation.navigate("Home", {response: this.state.morador}))
+        .catch(function(error) {
+            console.log(error.message)
+        })
+        .then(() => this.props.navigation.navigate("Home"));
+
+    }
+
     render(){
         const { modalVisible } = this.state;
         return(
@@ -162,15 +201,27 @@ export default class Proposta extends Component{
                         </View>
                     </View>
                     </Modal>
-                    <View style={styles.actionAdd}>
-                        <Icon style={styles.buttonAdd}
-                            reverse
-                            name='plus'
-                            type='font-awesome'
-                            color='cornflowerblue'
-                            onPress={() => this.setModalVisible(true)}
-                        />
-                        <Text>Adicionar item</Text>
+                    <View style={styles.buttons}>
+                        <View style={styles.actionAdd}>
+                            <Icon style={styles.buttonAdd}
+                                reverse
+                                name='plus'
+                                type='font-awesome'
+                                color='cornflowerblue'
+                                onPress={() => this.setModalVisible(true)}
+                            />
+                            <Text>Adicionar item</Text>
+                        </View>
+                        <View style={styles.actionAdd}>
+                            <Icon style={styles.buttonAdd}
+                                reverse
+                                name='check'
+                                type='font-awesome'
+                                color='cornflowerblue'
+                                onPress={() => this.onSend()}
+                            />
+                            <Text>Enviar proposta</Text>
+                        </View>
                     </View>
                 </View>
             </SafeAreaView>
@@ -226,6 +277,7 @@ const styles = StyleSheet.create({
       actionAdd: {
           alignItems: "center",
           marginBottom: 40,
+          flex: 1
       },
       header: {
         paddingTop: 15,
@@ -258,6 +310,10 @@ const styles = StyleSheet.create({
         elevation: 5,
         width: 300
       },
+      buttons: {
+        flexDirection: "row",
+        alignContent: 'stretch'
+      },
       button: {
         borderRadius: 10,
         padding: 10,
@@ -265,7 +321,8 @@ const styles = StyleSheet.create({
       },
       buttonAdd: {
         backgroundColor: "blue",
-        marginBottom: 20
+        marginBottom: 20,
+        flex: 1
       },
       buttonClose: {
         backgroundColor: "firebrick",
