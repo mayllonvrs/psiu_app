@@ -5,6 +5,7 @@ import Informes from '../Informes';
 import Morador from '../Morador'
 import Proposta from '../Proposta';
 import Consentimento from '../Consentimento';
+import Andamento from '../Andamento';
 
 
 const Stack = createStackNavigator();
@@ -17,8 +18,7 @@ export default function PsiuStack() {
       <Stack.Screen name="Cadastro" component={Morador} />
       <Stack.Screen name="Proposta" component={Proposta} />
       <Stack.Screen name="Informes" component={Informes} />
-      {/* <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="Settings" component={SettingsScreen} /> */}
+      <Stack.Screen name="Andamento" component={Andamento} options={{ title: 'Andamento das obras' }}/>
     </Stack.Navigator>
   );
 }

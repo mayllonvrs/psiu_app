@@ -16,10 +16,10 @@ export default class Proposta extends Component{
             modalVisible: false,
             morador: this.props.route.params?.morador,
             itens: [
-                {id: 2, nome: "Ginásio", image: "https://i.ibb.co/9Txq98W/ginasio.png", pontos: 45, descricao: "O Ginásio Lorem ipsum Dolor Sit amet"},
-                {id: 4, nome: "Parquinho", image: "https://i.ibb.co/YjKyxQ8/parquinho.png", pontos: 35, descricao: "O parquinho Lorem ipsum Dolor Sit amet"},
-                {id: 5, nome: "Creche", image: "https://i.ibb.co/K91JDxc/creche.png", pontos: 40, descricao: "A Creche anderia Lorem ipsum Dolor Sit amet"},
-                {id: 6, nome: "Lavanderia", image: "https://i.ibb.co/grPy7m0/elemento-1.png", pontos: 20, descricao: "A Lavanderia Lorem ipsum Dolor Sit amet"},
+                {id: 1, nome: "Ginásio", image: "https://i.ibb.co/9Txq98W/ginasio.png", pontos: 45, descricao: "O Ginásio Lorem ipsum Dolor Sit amet"},
+                {id: 2, nome: "Parquinho", image: "https://i.ibb.co/YjKyxQ8/parquinho.png", pontos: 35, descricao: "O parquinho Lorem ipsum Dolor Sit amet"},
+                {id: 3, nome: "Creche", image: "https://i.ibb.co/K91JDxc/creche.png", pontos: 40, descricao: "A Creche anderia Lorem ipsum Dolor Sit amet"},
+                {id: 4, nome: "Lavanderia", image: "https://i.ibb.co/grPy7m0/elemento-1.png", pontos: 20, descricao: "A Lavanderia Lorem ipsum Dolor Sit amet"},
             ],
             data: [],
             nextItem: 0,
@@ -57,6 +57,7 @@ export default class Proposta extends Component{
 
 
     setItem = (item) => {
+        console.log(item)
         if(item.nome != ""){
             return(
                 <>
@@ -112,8 +113,6 @@ export default class Proposta extends Component{
             itens += item.id
             if(numItens - 1 > i)
                 itens += ","
-           
-            
         })
 
         var body = new FormData()
