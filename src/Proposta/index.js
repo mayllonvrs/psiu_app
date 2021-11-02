@@ -3,6 +3,7 @@ import { Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet, Text, View, 
 import Item from "./Item"
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import api from "../services/api";
+import uri from "../services/server";
 
 
 var height = Dimensions.get('window').height;
@@ -11,21 +12,43 @@ export default class Proposta extends Component{
     constructor(props){
         super(props)
         this.state = {
-            proposta: {},
+            proposta: true,
             numItems: 8, 
             modalVisible: false,
             morador: this.props.route.params?.morador,
-            itens: [
-                {id: 1, nome: "Ginásio", image: "https://i.ibb.co/9Txq98W/ginasio.png", pontos: 45, descricao: "O Ginásio Lorem ipsum Dolor Sit amet"},
-                {id: 2, nome: "Parquinho", image: "https://i.ibb.co/YjKyxQ8/parquinho.png", pontos: 35, descricao: "O parquinho Lorem ipsum Dolor Sit amet"},
-                {id: 3, nome: "Creche", image: "https://i.ibb.co/K91JDxc/creche.png", pontos: 40, descricao: "A Creche anderia Lorem ipsum Dolor Sit amet"},
-                {id: 4, nome: "Lavanderia", image: "https://i.ibb.co/grPy7m0/elemento-1.png", pontos: 20, descricao: "A Lavanderia Lorem ipsum Dolor Sit amet"},
-            ],
+            itens: [],
             data: [],
             nextItem: 0,
             pontosProjeto: this.props.route.params?.morador.comunidade.projetos[0].pontuacao,
             pontosUtilizados: 0
         }
+        if(this.state.morador.proposta != undefined){
+            this.state.proposta = false
+            const itens = this.mapItens(this.state.morador.proposta.itens)
+            for (let i = 0; i < itens.length; i++) {
+                this.state.data.push(itens[i])
+            }
+            
+        }
+    }
+
+    mapItens(itens){
+        return itens.map(function(item){
+            return {
+                id: item.id, 
+                nome: item.item_nome, 
+                image: uri+"/psiu-gestor/storage/app/public/item/"+item.imagem, 
+                pontos: item.pivot.pontuacao_item, 
+                descricao: item.description
+            }
+        })
+    }
+
+    async componentDidMount(){
+        const response = await api.get('itens/'+this.state.morador.comunidade.projetos[0].id)
+        this.setState({
+            itens: this.mapItens(response.data)
+        })
     }
 
     insertItem(item){
@@ -57,18 +80,21 @@ export default class Proposta extends Component{
 
 
     setItem = (item) => {
-        console.log(item)
         if(item.nome != ""){
             return(
                 <>
-                    <View style={styles.showRemoveIcon}>
-                        <Icon style={styles.buttonRemove}
-                            name='times'
-                            type='font-awesome'
-                            color='firebrick'
-                            onPress={() => this.removeItem(item)}
-                        />
-                    </View>
+                    {
+                        this.state.proposta 
+                        &&
+                        <View style={styles.showRemoveIcon}>
+                            <Icon style={styles.buttonRemove}
+                                name='times'
+                                type='font-awesome'
+                                color='firebrick'
+                                onPress={() => this.removeItem(item)}
+                            />
+                        </View>
+                    }
                     <Image
                         style={styles.image}
                         source={{
@@ -76,7 +102,11 @@ export default class Proposta extends Component{
                         }}
                     />
                     <Text style={styles.itemHead}>{item.nome}</Text>
-                    <Text style={styles.text}> {item.pontos} pontos</Text>
+                    {
+                        this.state.proposta 
+                        &&
+                        <Text style={styles.text}> {item.pontos} pontos</Text>
+                    }
                 </>
             )
         }else{
@@ -144,9 +174,13 @@ export default class Proposta extends Component{
         const { modalVisible } = this.state;
         return(
             <SafeAreaView style={styles.tabuleiro}>
-                <View>
-                    <Text style={styles.header}>Pontos disponíveis: {this.state.pontosProjeto - this.state.pontosUtilizados}</Text>
-                </View>
+                {
+                    this.state.proposta 
+                    &&
+                    <View>
+                        <Text style={styles.header}>Pontos disponíveis: {this.state.pontosProjeto - this.state.pontosUtilizados}</Text>
+                    </View>
+                }
                 <View style={styles.itens}>
                 <FlatList
                     data={this.state.data}
@@ -200,28 +234,32 @@ export default class Proposta extends Component{
                         </View>
                     </View>
                     </Modal>
-                    <View style={styles.buttons}>
-                        <View style={styles.actionAdd}>
-                            <Icon style={styles.buttonAdd}
-                                reverse
-                                name='plus'
-                                type='font-awesome'
-                                color='cornflowerblue'
-                                onPress={() => this.setModalVisible(true)}
-                            />
-                            <Text>Adicionar item</Text>
+                    {
+                        this.state.proposta 
+                        &&
+                        <View style={styles.buttons}>
+                            <View style={styles.actionAdd}>
+                                <Icon style={styles.buttonAdd}
+                                    reverse
+                                    name='plus'
+                                    type='font-awesome'
+                                    color='cornflowerblue'
+                                    onPress={() => this.setModalVisible(true)}
+                                />
+                                <Text>Adicionar item</Text>
+                            </View>
+                            <View style={styles.actionAdd}>
+                                <Icon style={styles.buttonAdd}
+                                    reverse
+                                    name='check'
+                                    type='font-awesome'
+                                    color='cornflowerblue'
+                                    onPress={() => this.onSend()}
+                                />
+                                <Text>Enviar proposta</Text>
+                            </View>
                         </View>
-                        <View style={styles.actionAdd}>
-                            <Icon style={styles.buttonAdd}
-                                reverse
-                                name='check'
-                                type='font-awesome'
-                                color='cornflowerblue'
-                                onPress={() => this.onSend()}
-                            />
-                            <Text>Enviar proposta</Text>
-                        </View>
-                    </View>
+                    }
                 </View>
             </SafeAreaView>
         )
