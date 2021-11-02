@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { ProgressChart } from 'react-native-chart-kit';
 import api from '../services/api';
 import { Dimensions } from "react-native";
 import { useTheme } from '@react-navigation/native';
