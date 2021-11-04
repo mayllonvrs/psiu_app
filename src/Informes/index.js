@@ -8,7 +8,6 @@ class Informes extends Component{
     this.state = { 
       informes: []
     }
-    console.log(props)
   }
   
   async componentDidMount(){
