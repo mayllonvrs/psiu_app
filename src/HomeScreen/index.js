@@ -14,16 +14,8 @@ export default class Home extends Component{
     }
   }
 
-  async componentDidMount(){
-    const response = await api.get('comunidades')
-    this.setState({
-      comunidades: response.data
-    })
-    
-  }
-
   render(){
-    const textoProposta =  "Cadastar minha Proposta"
+    const textoProposta = this.state.morador.proposta == undefined ? "Cadastar minha Proposta" : "Visualizar minha Proposta"
     return (
       <>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
