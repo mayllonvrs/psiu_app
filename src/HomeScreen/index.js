@@ -35,7 +35,7 @@ export default class Home extends Component{
           </Pressable>
           <Pressable 
             style={styles.button} 
-            onPress={() => this.state.navigation.navigate('Informes')}
+            onPress={() => this.state.navigation.navigate('TabuleiroMedio', {morador: this.state.morador})}
           >
             <Text style={styles.text}>Consultar tabuleiro médio</Text>
           </Pressable>
