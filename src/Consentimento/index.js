@@ -15,12 +15,11 @@ export default class Consentimento extends Component{
             <ScrollView style={styles.container}>
                 <Text style={styles.text}>
                 
-                Etiam varius blandit lectus lacinia lobortis. Nunc a mauris consectetur, placerat tellus non, sagittis tellus. Nunc magna mauris, venenatis id egestas in, pretium non ex. Praesent vitae justo ligula. Suspendisse tincidunt dapibus mi at rhoncus. Ut maximus risus eget sapien ultrices consequat. Curabitur nec efficitur mi. Fusce cursus eu magna in elementum. Duis porta, turpis vehicula volutpat lobortis, augue sem faucibus risus, vitae molestie urna enim a mi. Sed molestie, quam ut tristique congue, massa nibh finibus mi, quis dapibus tortor velit ultricies diam. Suspendisse odio erat, varius id tincidunt quis, lobortis non sem.
-               
-                {"\n"}{"\n"}Fusce quis turpis eu ex pharetra imperdiet vitae ut risus. Morbi vitae lectus erat. Donec non nisi in est suscipit eleifend id ullamcorper nulla. Maecenas lobortis viverra sapien. In in urna quis nisl aliquam egestas. Mauris ullamcorper dolor odio, quis iaculis diam porta a. Vestibulum vitae tincidunt purus. Nulla vulputate dapibus nisi, ac sodales mi tempor ut. Aenean elementum sapien eget ex pellentesque euismod. Ut at leo mi. Donec eget massa et erat malesuada auctor.
-                {"\n"}{"\n"}Etiam varius blandit lectus lacinia lobortis. Nunc a mauris consectetur, placerat tellus non, sagittis tellus. Nunc magna mauris, venenatis id egestas in, pretium non ex. Praesent vitae justo ligula. Suspendisse tincidunt dapibus mi at rhoncus. Ut maximus risus eget sapien ultrices consequat. Curabitur nec efficitur mi. Fusce cursus eu magna in elementum. Duis porta, turpis vehicula volutpat lobortis, augue sem faucibus risus, vitae molestie urna enim a mi. Sed molestie, quam ut tristique congue, massa nibh finibus mi, quis dapibus tortor velit ultricies diam. Suspendisse odio erat, varius id tincidunt quis, lobortis non sem.
+                Concordo com a concessão de dados pessoais para obter acesso ao aplicativo PSIU – Planejamento Social para Intervenções Urbanas – desenvolvido pela Agência Recife para Inovação e Estratégia (ARIES) em parceria com o Cesar School. Sei que poderei contatar/consultar a instituição a qualquer momento pelo endereço eletrônico contato@aries.org.br .
 
-               
+                {"\n"}{"\n"}Todos os dados pessoais informados serão tratados de acordo com os princípios previstos na Lei Geral de Proteção de Dados (Lei nº 13.709/2018) e não serão utilizados para outras finalidades.
+                {"\n"}{"\n"}O preenchimento de inscrição para acesso ao aplicativo é voluntário. Ao preenchê-lo e enviá-lo, você consente com o tratamento de seus dados pessoais pela ARIES, Núcleo de Gestão do Porto Digital e Cesar School para as finalidades acima.
+
                 </Text>
                 <Pressable 
                     style={styles.button} 
@@ -41,9 +40,9 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 32,
         marginBottom: 50,
-        borderRadius: 4,
+        borderRadius: 25,
         elevation: 3,
-        backgroundColor: 'black',
+        backgroundColor: '#F89D5B',
         width: 350,
         marginTop: 10,
         height: 40,
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         fontWeight: 'bold',
         letterSpacing: 0.25,
-        color: 'white',
+        color: '#4B615B',
       },
     text: {
         fontSize: 16,
