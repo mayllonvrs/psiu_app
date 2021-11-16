@@ -85,15 +85,14 @@ class Morador extends Component{
             , config
         ).then(
             response => this.setState({morador: response.data}))
-        .then(() => this.props.navigation.navigate("Home", {response: this.state.morador}))
+        .then(() => this.props.navigation.navigate("BemVindo", {response: this.state.morador}))
         .catch(function(error) {
             ToastAndroid.showWithGravity(   
                 "Não foi possível realizar o cadastro", 
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
             )
-        }).then(() => this.props.navigation.navigate("Home"));
-
+        })
     }
 
     render(){

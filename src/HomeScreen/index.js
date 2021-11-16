@@ -8,10 +8,11 @@ export default class Home extends Component{
   constructor(props){
     super(props)
     this.state = { 
-      morador: this.props.route.params?.response.morador,
+      morador: this.props.route.params?.morador,
       navigation: this.props.navigation
       
     }
+    console.log(this.state.morador)
   }
 
   render(){
