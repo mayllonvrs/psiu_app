@@ -80,7 +80,7 @@ export default class Proposta extends Component{
 
 const styles = StyleSheet.create({
     tabuleiro: {
-        backgroundColor: 'darkseagreen',
+        backgroundColor: '#F5FCFA',
         flex: 2,
         padding: 10,
     },
@@ -96,9 +96,9 @@ const styles = StyleSheet.create({
         padding: 0,
         flexBasis: 0,
         borderRadius: 15,
-        borderColor: 'darkolivegreen',
-        borderWidth: 1,
-        height: height / 4.5
+        height: height / 4.5,
+        backgroundColor: '#F5FCFA',
+        elevation: 3
 
       },
       image: {

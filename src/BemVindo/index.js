@@ -9,7 +9,6 @@ export default class BemVindo extends Component{
             morador: this.props.route.params?.response.morador,
             navigation: this.props.navigation
         }
-        console.log(this.state.morador)
     }
 
     render(){
