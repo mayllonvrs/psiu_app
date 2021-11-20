@@ -285,7 +285,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         height: height / 4.5,
         backgroundColor: '#F5FCFA',
-        elevation: 3
+        elevation: 3,
+        marginTop: 10
       },
       itemHead: {
           fontWeight: "bold"
@@ -330,6 +331,7 @@ const styles = StyleSheet.create({
       image: {
         width: height / 6,
         height: height / 6,
+        marginTop: 8
       },
       centeredView: {
         flex: 1,
@@ -373,7 +375,7 @@ const styles = StyleSheet.create({
       showRemoveIcon: {
         alignSelf: "flex-end",
         marginHorizontal: 10,
-        marginBottom: -30,
+        marginBottom: -12,
         marginTop: 5
       },
       textStyle: {
