@@ -85,30 +85,31 @@ class Morador extends Component{
             , config
         ).then(
             response => this.setState({morador: response.data}))
-        .then(() => this.props.navigation.navigate("Home", {response: this.state.morador}))
+        .then(() => this.props.navigation.navigate("BemVindo", {response: this.state.morador}))
         .catch(function(error) {
             ToastAndroid.showWithGravity(   
                 "Não foi possível realizar o cadastro", 
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
             )
-        }).then(() => this.props.navigation.navigate("Home"));
-
+        })
     }
 
     render(){
         return (
             <SafeAreaView style={styles.container}>
                 <Text style={styles.labelInput} >CPF</Text>
-                <TextInput 
-                    keyboardType = 'numeric'
-                    placeholder = 'Digite seu CPF'
-                    onChangeText = {this.handleCpf}
-                />
+                <View style={styles.input}>
+                    <TextInput 
+                        keyboardType = 'numeric'
+                        placeholder = 'Digite seu CPF'
+                        onChangeText = {this.handleCpf}
+                    />
+                </View>
                 <Text style={styles.labelInput} onPress={this.showDatepicker}>Data de Nascimento</Text>
-                <View style={{flexDirection:"row", alignItems: "baseline"}}>
+                <View style={[{flexDirection:"row", alignItems: "baseline"}, styles.input]}>
                     <View style={{flex:7}}>
-                        <Text>{ this.showDate() }</Text>
+                        <Text style={styles.inputText}>{ this.showDate() }</Text>
                     </View>
                     <View style={{flex:1}}>
                         <Pressable style={styles.calendar} onPress={this.showDatepicker}>
@@ -129,53 +130,59 @@ class Morador extends Component{
                     />
                 )}
                 <Text style={styles.labelInput}>Estado Civil</Text>
-                <RNPickerSelect  
-                    placeholder={{ label: "Selecione seu estado civil", value: null }}
-                    onValueChange={(value) => this.setState({ estado_civil: value })}
-                    items={[
-                        { label: "Solteiro(a)", value: "Solteiro" },
-                        { label: "Casado(a)", value: "Casado(a)" },
-                        { label: "União Estável", value: "União Estável" },
-                        { label: "Divorciado(a)", value: "Divorciado(a)" },
-                        { label: "Viúvo(a)", value: "Viúvo(a)" },
+                <View style={styles.input}>
+                    <RNPickerSelect  
+                        placeholder={{ label: "Selecione seu estado civil", value: null }}
+                        onValueChange={(value) => this.setState({ estado_civil: value })}
+                        items={[
+                            { label: "Solteiro(a)", value: "Solteiro" },
+                            { label: "Casado(a)", value: "Casado(a)" },
+                            { label: "União Estável", value: "União Estável" },
+                            { label: "Divorciado(a)", value: "Divorciado(a)" },
+                            { label: "Viúvo(a)", value: "Viúvo(a)" },
 
-                    ]}
-                    style={{
-                        inputAndroid: {
-                        color: 'black'
-                        },
-                    }}
-                />
+                        ]}
+                        style={{
+                            inputAndroid: {
+                            color: 'black'
+                            },
+                        }}
+                    />
+                </View>
                 <Text style={styles.labelInput}>Raça</Text>
-                <RNPickerSelect 
-                    placeholder={{ label: "Selecione sua raça", value: null }}
-                    onValueChange={(value) => this.setState({raca: value})}
-                    items={[
-                        { label: "Amarela", value: "Amarela" },
-                        { label: "Branca", value: "Branca" },
-                        { label: "Indígena", value: "Indígena" },
-                        { label: "Parda", value: "Parda" },
-                        { label: "Preta", value: "Preta" },
-                    ]}
-                    style={{
-                        inputAndroid: {
-                        color: 'black'
-                        },
-                    }}
-                />
+                <View style={styles.input}>
+                    <RNPickerSelect 
+                        placeholder={{ label: "Selecione sua raça", value: null }}
+                        onValueChange={(value) => this.setState({raca: value})}
+                        items={[
+                            { label: "Amarela", value: "Amarela" },
+                            { label: "Branca", value: "Branca" },
+                            { label: "Indígena", value: "Indígena" },
+                            { label: "Parda", value: "Parda" },
+                            { label: "Preta", value: "Preta" },
+                        ]}
+                        style={{
+                            inputAndroid: {
+                            color: 'black'
+                            },
+                        }}
+                    />
+                </View>
                 <Text style={styles.labelInput}>Bairr / Comunidade</Text>
-                <RNPickerSelect
-                    placeholder={{ label: "Selecione seu bairro ou comunidade", value: null }}
-                    onValueChange={(value) => this.setState({bairro_comunidade: value})}
-                    items={
-                        this.state.comunidades.map((item) => ({label: item.name, value: item.id}))
-                    }
-                    style={{
-                        inputAndroid: {
-                        color: 'black'
-                        },
-                    }}
-                />
+                <View style={styles.input}>
+                    <RNPickerSelect
+                        placeholder={{ label: "Selecione seu bairro ou comunidade", value: null }}
+                        onValueChange={(value) => this.setState({bairro_comunidade: value})}
+                        items={
+                            this.state.comunidades.map((item) => ({label: item.name, value: item.id}))
+                        }
+                        style={{
+                            inputAndroid: {
+                            color: 'black'
+                            },
+                        }}
+                    />
+                </View>
                 <Pressable style={styles.button} onPress={this.onSend}>
                     <Text style={styles.text}>Entrar</Text>
                 </Pressable>
@@ -199,23 +206,27 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold'
     },
+    inputText:{
+        fontSize: 15,
+        color: "silver" 
+    },
     input:{
-        fontSize: 20,
-        borderBottomColor: "lightgray",
-        borderBottomWidth: 1,
-        width: width*0.8,
-        height: 40
-
-        
+        borderColor: "lightgray",
+        borderWidth: 1,
+        width: width*0.9,
+        height: 50,
+        borderRadius: 20,
+        paddingLeft:10,
+        paddingTop: 10
     },
     button: {
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
         paddingHorizontal: 32,
-        borderRadius: 4,
+        borderRadius: 25,
         elevation: 3,
-        backgroundColor: 'black',
+        backgroundColor: '#F89D5B',
         width: width*0.90,
       },
       text: {
@@ -223,7 +234,7 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         fontWeight: 'bold',
         letterSpacing: 0.25,
-        color: 'white',
+        color: '#435256',
       },
     inputAndroid: {
         fontSize: 14,

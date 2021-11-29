@@ -7,6 +7,7 @@ import Proposta from '../Proposta';
 import Consentimento from '../Consentimento';
 import Andamento from '../Andamento';
 import TabuleiroMedio from '../TabuleiroMedio'
+import BemVindo from '../BemVindo';
 
 
 const Stack = createStackNavigator();
@@ -14,13 +15,14 @@ const Stack = createStackNavigator();
 export default function PsiuStack() {
   return (
     <Stack.Navigator initialRouteName="Consentimento">
-      <Stack.Screen name="Home" component={HomeScreen}  options={{ title: 'PSIU' }}/>
-      <Stack.Screen name="Consentimento" component={Consentimento} options={{ title: 'Termo de consentimento' }}/>
-      <Stack.Screen name="Cadastro" component={Morador} />
-      <Stack.Screen name="Proposta" component={Proposta} />
-      <Stack.Screen name="Informes" component={Informes} />
-      <Stack.Screen name="Andamento" component={Andamento} options={{ title: 'Andamento das obras' }}/>
-      <Stack.Screen name="TabuleiroMedio" component={TabuleiroMedio} options={{ title: 'Tabuleiro Médio' }}/>
+      <Stack.Screen name="Home" component={HomeScreen}  options={{ title: 'PSIU', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="Consentimento" component={Consentimento} options={{ title: 'Termo de consentimento', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="Cadastro" component={Morador} options={{headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}} />
+      <Stack.Screen name="Proposta" component={Proposta} options={{headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="Informes" component={Informes} options={{headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="Andamento" component={Andamento} options={{ title: 'Andamento do Projeto', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="TabuleiroMedio" component={TabuleiroMedio} options={{ title: 'Tabuleiro Médio', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="BemVindo" component={BemVindo} options={{ title: 'Bem Vindo', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
     </Stack.Navigator>
   );
 }
