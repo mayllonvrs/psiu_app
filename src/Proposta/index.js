@@ -122,14 +122,17 @@ export default class Proposta extends Component{
         
         return(
             <>
-                <Text style={styles.pointsModal}> {item.pontos} pontos</Text>
+                <View style={styles.modalTop}>
+                    <Text style={styles.headerModal}> {item.nome.toUpperCase()}</Text>
+                    <Text style={styles.pointsModal}> {item.pontos} PONTOS</Text>
+                </View>
                 <Image
                     style={styles.image}
                     source={{
                         uri: item.image,
                     }}
                 />
-                <Text style={styles.headerModal}> {item.nome}</Text>
+                
                 <Text style={styles.text}>{item.descricao}</Text>
             </>
         )
@@ -166,8 +169,6 @@ export default class Proposta extends Component{
         .catch(function(error) {
             console.log(error.message)
         })
-        .then(() => this.props.navigation.navigate("Home"));
-
     }
 
     render(){
@@ -207,13 +208,13 @@ export default class Proposta extends Component{
                     >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Selecione um item</Text>
+                            <Text style={styles.modalText}>ESCOLHA UM ITEM</Text>
                             <FlatList
                                 data={this.state.itens}
-                                keyExtractor={item => item.id}
+                                keyExtractor={item => item.id.toString()}
                                 numColumns={1}
                                 renderItem={({ item }) => {
-                                    if(!this.state.data.find( i => i.id === item.id )){
+                                    if(!this.state.data.find( i => i.id === item.id)){
                                         return (
                                         <Pressable 
                                             style={styles.itemModal}
@@ -243,7 +244,7 @@ export default class Proposta extends Component{
                                     reverse
                                     name='plus'
                                     type='font-awesome'
-                                    color='cornflowerblue'
+                                    color='#F89D5B'
                                     onPress={() => this.setModalVisible(true)}
                                 />
                                 <Text>Adicionar item</Text>
@@ -253,7 +254,7 @@ export default class Proposta extends Component{
                                     reverse
                                     name='check'
                                     type='font-awesome'
-                                    color='cornflowerblue'
+                                    color='#F89D5B'
                                     onPress={() => this.onSend()}
                                 />
                                 <Text>Enviar proposta</Text>
@@ -268,7 +269,7 @@ export default class Proposta extends Component{
 
 const styles = StyleSheet.create({
     tabuleiro: {
-        backgroundColor: 'darkseagreen',
+        backgroundColor: '#F5FCFA',
         flex: 2
     },
     itens: {
@@ -282,31 +283,35 @@ const styles = StyleSheet.create({
         padding: 0,
         flexBasis: 0,
         borderRadius: 15,
-        borderColor: 'darkolivegreen',
-        borderWidth: 1,
-        height: height / 4.5
-
+        height: height / 4.5,
+        backgroundColor: '#F5FCFA',
+        elevation: 3,
+        marginTop: 10
       },
       itemHead: {
           fontWeight: "bold"
       },
+      modalTop: {
+        flex: 1,
+        alignSelf: "flex-start",
+    },
     itemModal: {
         alignItems: "center",
         margin: 4,
         padding: 10,
-        borderRadius: 5,
-        borderColor: 'gray',
-        borderWidth: 1,
-
+        borderRadius: 25,
+        backgroundColor: 'white',
+        elevation: 1
       },
       headerModal: {
           fontWeight: "bold",
           fontSize: 15,
+          color: '#707070'
       },
       pointsModal:{
         marginBottom: -10,
-        alignSelf: "flex-end",
-        fontSize: 12
+        fontSize: 12,
+        color: '#707070'
       },
       text: {
         color: "#333333"
@@ -314,7 +319,8 @@ const styles = StyleSheet.create({
       actionAdd: {
           alignItems: "center",
           marginBottom: 40,
-          flex: 1
+          flex: 1,
+          color: '#4B615B'
       },
       header: {
         paddingTop: 15,
@@ -325,6 +331,7 @@ const styles = StyleSheet.create({
       image: {
         width: height / 6,
         height: height / 6,
+        marginTop: 8
       },
       centeredView: {
         flex: 1,
@@ -334,8 +341,8 @@ const styles = StyleSheet.create({
       modalView: {
         marginBottom: 50,
         marginTop: 140,
-        backgroundColor: "white",
-        borderRadius: 10,
+        backgroundColor: "#EFEFEF",
+        borderRadius: 30,
         padding: 10,
         shadowColor: "#000",
         shadowOffset: {
@@ -357,7 +364,7 @@ const styles = StyleSheet.create({
         elevation: 2
       },
       buttonAdd: {
-        backgroundColor: "blue",
+        backgroundColor: "#F89D5B",
         marginBottom: 20,
         flex: 1
       },
@@ -368,7 +375,7 @@ const styles = StyleSheet.create({
       showRemoveIcon: {
         alignSelf: "flex-end",
         marginHorizontal: 10,
-        marginBottom: -30,
+        marginBottom: -12,
         marginTop: 5
       },
       textStyle: {
