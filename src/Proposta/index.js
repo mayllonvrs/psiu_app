@@ -4,6 +4,7 @@ import Item from "./Item"
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import api from "../services/api";
 import uri from "../services/server";
+import Spinner from "react-native-loading-spinner-overlay";
 
 
 var height = Dimensions.get('window').height;
@@ -20,7 +21,8 @@ export default class Proposta extends Component{
             data: [],
             nextItem: 0,
             pontosProjeto: this.props.route.params?.morador.comunidade.projetos[0].pontuacao,
-            pontosUtilizados: 0
+            pontosUtilizados: 0,
+            spinner: false
         }
         if(this.state.morador.proposta != undefined){
             this.state.proposta = false
@@ -45,9 +47,13 @@ export default class Proposta extends Component{
     }
 
     async componentDidMount(){
+        this.setState({
+            spinner: true
+        })
         const response = await api.get('itens/'+this.state.morador.comunidade.projetos[0].id)
         this.setState({
-            itens: this.mapItens(response.data)
+            itens: this.mapItens(response.data),
+            spinner: false
         })
     }
 
@@ -102,11 +108,6 @@ export default class Proposta extends Component{
                         }}
                     />
                     <Text style={styles.itemHead}>{item.nome}</Text>
-                    {
-                        this.state.proposta 
-                        &&
-                        <Text style={styles.text}> {item.pontos} pontos</Text>
-                    }
                 </>
             )
         }else{
@@ -139,7 +140,9 @@ export default class Proposta extends Component{
     }
 
     onSend = () => {
-
+        this.setState({
+            spinner: true
+        })
         var itens = ""
         const numItens = this.state.data.length
         this.state.data.forEach(function(item, i) {
@@ -164,7 +167,7 @@ export default class Proposta extends Component{
             'proposta', body
             , config
         )
-        .then(() => alert("O cadastro da sua proposta foi realizado com sucesso"))
+        .then(() => Alert.alert("Proposta enviada", "O cadastro da sua proposta foi realizado com sucesso"))
         .then(() => this.props.navigation.navigate("Home", {response: this.state.morador}))
         .catch(function(error) {
             console.log(error.message)
@@ -173,8 +176,32 @@ export default class Proposta extends Component{
 
     render(){
         const { modalVisible } = this.state;
+
+        const showConfirmDialog = () => {
+            return Alert.alert(
+              "Enviar Proposta",
+              "Deseja fechar e enviar sua proposta?\n\nNão será possivel alterar a proposta após o envio.",
+              [
+                  {
+                    text: " Cancelar",
+                  },
+                {
+                  text: "Enviar ",
+                  onPress: () => {
+                    this.onSend();
+                  },
+                },
+              ]
+            );
+          };
+
         return(
             <SafeAreaView style={styles.tabuleiro}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Carregando...'}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 {
                     this.state.proposta 
                     &&
@@ -255,7 +282,7 @@ export default class Proposta extends Component{
                                     name='check'
                                     type='font-awesome'
                                     color='#F89D5B'
-                                    onPress={() => this.onSend()}
+                                    onPress={() => showConfirmDialog()}
                                 />
                                 <Text>Enviar proposta</Text>
                             </View>
@@ -268,6 +295,9 @@ export default class Proposta extends Component{
 }
 
 const styles = StyleSheet.create({
+    spinnerTextStyle: {
+        color: '#FFF'
+    },
     tabuleiro: {
         backgroundColor: '#F5FCFA',
         flex: 2
@@ -283,7 +313,7 @@ const styles = StyleSheet.create({
         padding: 0,
         flexBasis: 0,
         borderRadius: 15,
-        height: height / 4.5,
+        height: height / 4.2,
         backgroundColor: '#F5FCFA',
         elevation: 3,
         marginTop: 10

@@ -4,6 +4,7 @@ import api from '../services/api';
 import { Dimensions } from "react-native";
 import { useTheme } from '@react-navigation/native';
 import ActivityRings from "react-native-activity-rings";  
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 
@@ -11,14 +12,16 @@ const screenWidth = Dimensions.get("window").width;
 
 
 const colors = [
-    '#d73056', 
-    '#f05443', 
-    '#fe7c2b',  
-    '#13175c', 
-    '#b21563', 
-    '#ffa600',
-    '#531668', 
-    '#86106a', 
+    '#9FB7BD', 
+    '#F29E6D',
+    '#798C87',
+    '#D96941',  
+    '#21403A',  
+    '#9FB7BD', 
+    '#F29E6D',
+    '#798C87',
+    '#D96941',  
+    '#21403A', 
 ]
   const activityConfig = {
     width: screenWidth,
@@ -32,14 +35,19 @@ class Andamento extends Component{
   constructor(props){
     super(props)
     this.state = { 
-      etapas: []
+      etapas: [],
+      spinner: false
     }
   }
   
   async componentDidMount(){
+    this.setState({
+      spinner: true
+    })
     const response = await api.get('etapas/'+this.props.route.params?.projeto)
     this.setState({
-      etapas: response.data
+      etapas: response.data,
+      spinner: false
     })
   }
 
@@ -58,6 +66,11 @@ class Andamento extends Component{
 
     return(
       <SafeAreaView style={styles.container}>
+        <Spinner
+            visible={this.state.spinner}
+            textContent={'Carregando...'}
+            textStyle={styles.spinnerTextStyle}
+        />
           <View>
             <ActivityRings style={styles.chart} theme={"light"} data={etapas} config={activityConfig} />
             <FlatList style={styles.list}
@@ -92,6 +105,9 @@ class Andamento extends Component{
 export default Andamento;
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: '#FFF'
+  },  
   container: {
     flex: 1,
     backgroundColor: '#fff',

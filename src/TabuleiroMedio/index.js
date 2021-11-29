@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Dimensions, FlatList, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import api from "../services/api";
 import uri from "../services/server";
 
@@ -13,6 +14,7 @@ export default class Proposta extends Component{
             itens: [],
             morador: this.props.route.params?.morador,
             pontosProjeto: this.props.route.params?.morador.comunidade.projetos[0].pontuacao,
+            spinner: false
         }
     }
 
@@ -29,9 +31,13 @@ export default class Proposta extends Component{
     }
     
     async componentDidMount(){
+        this.setState({
+            spinner: true
+          })
         const response = await api.get('tabuleiro/'+this.state.morador.comunidade.projetos[0].id)
         this.setState({
-            itens: this.mapItens(response.data)
+            itens: this.mapItens(response.data),
+            spinner: false
         })
     }
 
@@ -61,6 +67,11 @@ export default class Proposta extends Component{
     render(){
         return(
             <SafeAreaView style={styles.tabuleiro}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Carregando...'}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <FlatList
                     data={this.state.itens}
                     keyExtractor={item => item.id}
@@ -79,6 +90,9 @@ export default class Proposta extends Component{
 }
 
 const styles = StyleSheet.create({
+    spinnerTextStyle: {
+        color: '#FFF'
+      }, 
     tabuleiro: {
         backgroundColor: '#F5FCFA',
         flex: 2,
