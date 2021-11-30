@@ -61,14 +61,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   item: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     padding: 15,
     marginVertical: 3,
     marginHorizontal: 10,
+    elevation: 3
   },
   title: {
-    fontSize: 18,
-    color: '#fff'
+    fontSize: 16,
+    color: 'black'
   },
   list:{
     margin: 15
