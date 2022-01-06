@@ -168,7 +168,9 @@ export default class Proposta extends Component{
             , config
         )
         .then(() => Alert.alert("Proposta enviada", "O cadastro da sua proposta foi realizado com sucesso"))
-        .then(() => this.props.navigation.navigate("Home", {response: this.state.morador}))
+        .then(() => {
+            this.props.navigation.navigate("Home")
+        })
         .catch(function(error) {
             console.log(error.message)
         })
@@ -176,7 +178,6 @@ export default class Proposta extends Component{
 
     render(){
         const { modalVisible } = this.state;
-
         const showConfirmDialog = () => {
             return Alert.alert(
               "Enviar Proposta",

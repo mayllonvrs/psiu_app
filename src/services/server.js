@@ -1,3 +1,2 @@
-const uri = "http://45.80.153.95/develop"
-// const uri = "http://192.168.0.114"
+const uri = "https://psiu.aries.org.br"
 export default uri
