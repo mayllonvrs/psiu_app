@@ -6,6 +6,8 @@ import RNPickerSelect from "react-native-picker-select";
 import api from '../services/api';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import Spinner from "react-native-loading-spinner-overlay";
+
 
 var width = Dimensions.get('window').width;
 
@@ -23,7 +25,8 @@ class Morador extends Component{
             raca: "",
             bairro_comunidade: "",
             comunidades: [],
-            morador: {}
+            morador: {},
+            spinner: false
             
         }
         const { navigation } = this.props;
@@ -31,9 +34,13 @@ class Morador extends Component{
     
 
     async componentDidMount(){
+        this.setState({
+            spinner: true
+        })
         const response = await api.get('comunidades')
         this.setState({
-          comunidades: response.data
+          comunidades: response.data,
+          spinner: false
         })
         
       }
@@ -56,7 +63,7 @@ class Morador extends Component{
 
     showDate = () => {
         if(this.state.dateSelected == true){
-            return format(this.state.date, "dd/mm/yyyy");
+            return format(this.state.date, "dd/MM/yyyy");
         }else { return "Selecione a sua data de nascimento" } 
     }
 
@@ -65,11 +72,11 @@ class Morador extends Component{
     }
 
     onSend = () => {
-
+        this.setState({spinner: true})
         var data = new FormData()
         data.append('cpf', this.state.cpf)
         data.append('estado_civil', this.state.estado_civil)
-        data.append('data_nascimento', format(this.state.date, "yyyy-mm-dd"))
+        data.append('data_nascimento', format(this.state.date, "yyyy-MM-dd"))
         data.append('raca', this.state.raca)
         data.append('bairro_comunidade', this.state.bairro_comunidade)
 
@@ -98,6 +105,11 @@ class Morador extends Component{
     render(){
         return (
             <SafeAreaView style={styles.container}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Carregando...'}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Text style={styles.labelInput} >CPF</Text>
                 <View style={styles.input}>
                     <TextInput 
@@ -125,7 +137,7 @@ class Morador extends Component{
                     testID="dateTimePicker"
                     value={this.state.date}
                     mode={this.state.mode}
-                    display="spinner"
+                    display="default"
                     onChange={this.onChange}
                     />
                 )}
@@ -168,7 +180,7 @@ class Morador extends Component{
                         }}
                     />
                 </View>
-                <Text style={styles.labelInput}>Bairr / Comunidade</Text>
+                <Text style={styles.labelInput}>Bairro / Comunidade</Text>
                 <View style={styles.input}>
                     <RNPickerSelect
                         placeholder={{ label: "Selecione seu bairro ou comunidade", value: null }}
@@ -194,6 +206,9 @@ class Morador extends Component{
 export default Morador;
 
 const styles = StyleSheet.create({
+    spinnerTextStyle: {
+        color: '#FFF'
+    },
     container : {
         padding         : 15,
         flex            : 1,
