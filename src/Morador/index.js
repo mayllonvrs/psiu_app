@@ -63,7 +63,7 @@ class Morador extends Component{
 
     showDate = () => {
         if(this.state.dateSelected == true){
-            return format(this.state.date, "dd/mm/yyyy");
+            return format(this.state.date, "dd/MM/yyyy");
         }else { return "Selecione a sua data de nascimento" } 
     }
 
@@ -76,7 +76,7 @@ class Morador extends Component{
         var data = new FormData()
         data.append('cpf', this.state.cpf)
         data.append('estado_civil', this.state.estado_civil)
-        data.append('data_nascimento', format(this.state.date, "yyyy-mm-dd"))
+        data.append('data_nascimento', format(this.state.date, "yyyy-MM-dd"))
         data.append('raca', this.state.raca)
         data.append('bairro_comunidade', this.state.bairro_comunidade)
 
@@ -137,7 +137,7 @@ class Morador extends Component{
                     testID="dateTimePicker"
                     value={this.state.date}
                     mode={this.state.mode}
-                    display="spinner"
+                    display="default"
                     onChange={this.onChange}
                     />
                 )}
