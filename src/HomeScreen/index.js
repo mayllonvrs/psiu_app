@@ -15,54 +15,59 @@ export default class Home extends Component{
     super(props)
     this.state = { 
       morador: this.props.route.params?.morador,
-      navigation: this.props.navigation
+      projeto: this.props.route.params?.projeto,
+      proposta: this.props.route.params?.proposta,
+      navigation: this.props.navigation,
+      propostaExists: false
+    }
+    if(this.state.proposta != undefined){
+      this.state.proposta.forEach(element => {
+        if(element.projeto_id === this.state.projeto.id){
+          this.state.propostaExists = true
+          this.state.proposta = element
+        }
+      });
     }
   }
 
+
   render(){
-    const textoProposta = this.state.morador.proposta == undefined ? "Cadastar minha Proposta" : "Visualizar minha Proposta"
+    const textoProposta = this.state.propostaExists ? "Visualizar minha Proposta" : "Cadastar minha Proposta"
     const BUTTONS = [
       {
           id: 1,
           title: textoProposta,
           image: minha_proposta,
           link: 'Proposta',
-          params: {morador: this.state.morador}
+          params: {morador: this.state.morador, projeto: this.state.projeto, propostaExists: this.state.propostaExists, proposta: this.state.proposta}
       },
       {
           id: 2,
-          title: 'Tabuleiro Médio',
+          title: 'Escolhas da Comunidade',
           image: tabuleiro_medio,
           link: 'TabuleiroMedio',
-          params: {morador: this.state.morador}
+          params: {morador: this.state.morador, projeto: this.state.projeto}
       },
       {
           id: 3,
           title: 'Andamento do Projeto',
           image: andamento_projeto,
           link: 'Andamento',
-          params: {projeto: this.state.morador.comunidade.projetos[0].id}
+          params: {projeto: this.state.projeto.id}
       },
       {
           id: 4,
           title: 'Avisos',
           image: avisos,
           link: 'Informes',
-          params: {projeto: this.state.morador.comunidade.projetos[0].id}
+          params: {projeto: this.state.projeto.id}
       },
     ];
     return (
       <>
-        <View style={styles.header}>
           <View style={styles.headerItem}>
-            <Text style={styles.title}>Comunidade</Text>
-            <Text tyle={styles.text}> {this.state.morador.comunidade.name} </Text>
+            <Text style={styles.title}> {this.state.projeto.nome_projeto} </Text>
           </View>
-          <View style={styles.headerItem}>
-            <Text style={styles.title}>Projeto</Text>
-            <Text tyle={styles.text}> {this.state.morador.comunidade.projetos[0]?.nome_projeto} </Text>
-          </View>
-        </View>
         <View style={styles.menu}>
           <FlatList
             data={BUTTONS}
@@ -126,9 +131,10 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   title: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: 'bold',
-    color: '#5E7771'
+    color: '#5E7771',
+    textAlign: 'center'
   },
   image: {
     flex: 1,

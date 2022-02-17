@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import api from '../services/api';
 import { Dimensions } from "react-native";
 import { useTheme } from '@react-navigation/native';
@@ -44,11 +44,20 @@ class Andamento extends Component{
     this.setState({
       spinner: true
     })
-    const response = await api.get('etapas/'+this.props.route.params?.projeto)
-    this.setState({
-      etapas: response.data,
-      spinner: false
-    })
+    try{
+      const response = await api.get('etapas/'+this.props.route.params?.projeto)
+      this.setState({
+        etapas: response.data,
+        spinner: false
+      })
+    }catch(e){
+      Alert.alert('Não foi possível carregar o andamento deste projeto.')
+      this.props.navigation.goBack()
+    }finally{
+      this.setState({
+        spinner: false
+      })
+    }
   }
 
   render(){
