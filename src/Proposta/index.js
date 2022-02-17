@@ -13,24 +13,26 @@ export default class Proposta extends Component{
     constructor(props){
         super(props)
         this.state = {
-            proposta: true,
+            proposta: this.props.route.params?.proposta,
             numItems: 8, 
             modalVisible: false,
             morador: this.props.route.params?.morador,
             itens: [],
             data: [],
             nextItem: 0,
-            pontosProjeto: this.props.route.params?.morador.comunidade.projetos[0].pontuacao,
+            projeto: this.props.route.params?.projeto,
+            propostaExists: this.props.route.params?.propostaExists,
+            pontosProjeto: this.props.route.params?.projeto.pontuacao,
             pontosUtilizados: 0,
             spinner: false
         }
-        if(this.state.morador.proposta != undefined){
-            this.state.proposta = false
-            const itens = this.mapItens(this.state.morador.proposta.itens)
+
+
+        if(this.state.propostaExists){
+            const itens = this.mapItens(this.state.proposta.itens)
             for (let i = 0; i < itens.length; i++) {
                 this.state.data.push(itens[i])
             }
-            
         }
     }
 
@@ -39,7 +41,7 @@ export default class Proposta extends Component{
             return {
                 id: item.id, 
                 nome: item.item_nome, 
-                image: uri+"/psiu-gestor/storage/app/public/item/"+item.imagem, 
+                image: uri+"/../storage/app/public/item/"+item.imagem, 
                 pontos: item.pivot.pontuacao_item, 
                 descricao: item.description
             }
@@ -50,7 +52,7 @@ export default class Proposta extends Component{
         this.setState({
             spinner: true
         })
-        const response = await api.get('itens/'+this.state.morador.comunidade.projetos[0].id)
+        const response = await api.get('itens/'+this.state.projeto.id)
         this.setState({
             itens: this.mapItens(response.data),
             spinner: false
@@ -90,7 +92,7 @@ export default class Proposta extends Component{
             return(
                 <>
                     {
-                        this.state.proposta 
+                        !this.state.propostaExists
                         &&
                         <View style={styles.showRemoveIcon}>
                             <Icon style={styles.buttonRemove}
@@ -102,7 +104,7 @@ export default class Proposta extends Component{
                         </View>
                     }
                     <Image
-                        style={styles.image}
+                        style={styles.imageTable}
                         source={{
                             uri: item.image,
                         }}
@@ -140,40 +142,44 @@ export default class Proposta extends Component{
     }
 
     onSend = () => {
-        this.setState({
-            spinner: true
-        })
-        var itens = ""
         const numItens = this.state.data.length
-        this.state.data.forEach(function(item, i) {
-            itens += item.id
-            if(numItens - 1 > i)
-                itens += ","
-        })
-
-        var body = new FormData()
-        body.append('morador_id', this.state.morador.id)
-        body.append('projeto_id', this.state.morador.comunidade.projetos[0].id)
-        body.append('itens', itens)
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-              }
-        };
-        
-        var self = this;
-        const response = api.post(
-            'proposta', body
-            , config
-        )
-        .then(() => Alert.alert("Proposta enviada", "O cadastro da sua proposta foi realizado com sucesso"))
-        .then(() => {
-            this.props.navigation.navigate("Home")
-        })
-        .catch(function(error) {
-            console.log(error.message)
-        })
+        if(numItens > 0){
+            this.setState({
+                spinner: true
+            })
+            var itens = ""
+            this.state.data.forEach(function(item, i) {
+                itens += item.id
+                if(numItens - 1 > i)
+                    itens += ","
+            })
+    
+            var body = new FormData()
+            body.append('morador_id', this.state.morador.id)
+            body.append('projeto_id', this.state.projeto.id)
+            body.append('itens', itens)
+    
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                  }
+            };
+            
+            var self = this;
+            const response = api.post(
+                'proposta', body
+                , config
+            )
+            .then(() => Alert.alert("Proposta enviada", "O cadastro da sua proposta foi realizado com sucesso"))
+            .then(() => {
+                this.props.navigation.navigate("Projetos")
+            })
+            .catch(function(error) {
+                console.log(error.message)
+            })
+        }else{
+            Alert.alert("Por favor, selecione pelo menos um item.")
+        }
     }
 
     render(){
@@ -204,7 +210,7 @@ export default class Proposta extends Component{
                     textStyle={styles.spinnerTextStyle}
                 />
                 {
-                    this.state.proposta 
+                    !this.state.propostaExists
                     &&
                     <View>
                         <Text style={styles.header}>Pontos disponíveis: {this.state.pontosProjeto - this.state.pontosUtilizados}</Text>
@@ -264,7 +270,7 @@ export default class Proposta extends Component{
                     </View>
                     </Modal>
                     {
-                        this.state.proposta 
+                        !this.state.propostaExists
                         &&
                         <View style={styles.buttons}>
                             <View style={styles.actionAdd}>
@@ -360,6 +366,11 @@ const styles = StyleSheet.create({
         fontSize: 16
       },
       image: {
+        width: height / 3,
+        height: height / 3,
+        marginTop: 10
+      },
+      imageTable: {
         width: height / 6,
         height: height / 6,
         marginTop: 8

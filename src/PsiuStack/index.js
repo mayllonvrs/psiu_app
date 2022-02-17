@@ -8,7 +8,8 @@ import Consentimento from '../Consentimento';
 import Andamento from '../Andamento';
 import TabuleiroMedio from '../TabuleiroMedio'
 import BemVindo from '../BemVindo';
-
+import Projetos from '../Projetos';
+import TipoCadastro from '../TipoCadastro';
 
 const Stack = createStackNavigator();
 
@@ -21,8 +22,10 @@ export default function PsiuStack() {
       <Stack.Screen name="Proposta" component={Proposta} options={{headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
       <Stack.Screen name="Informes" component={Informes} options={{headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
       <Stack.Screen name="Andamento" component={Andamento} options={{ title: 'Andamento do Projeto', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
-      <Stack.Screen name="TabuleiroMedio" component={TabuleiroMedio} options={{ title: 'Tabuleiro Médio', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="TabuleiroMedio" component={TabuleiroMedio} options={{ title: 'Escolhas da Comunidade', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
       <Stack.Screen name="BemVindo" component={BemVindo} options={{ title: 'Bem Vindo', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="Projetos" component={Projetos} options={{ title: 'Ambientes', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
+      <Stack.Screen name="TipoCadastro" component={TipoCadastro} options={{ title: 'Cadastro', headerStyle: {backgroundColor: '#4B615B',}, headerTintColor: "#FFFFFF"}}/>
     </Stack.Navigator>
   );
 }
