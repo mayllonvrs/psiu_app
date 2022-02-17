@@ -23,7 +23,7 @@ export default class Consentimento extends Component{
                 </Text>
                 <Pressable 
                     style={styles.button} 
-                    onPress={() => this.state.navigation.navigate('Cadastro')}
+                    onPress={() => this.state.navigation.navigate('TipoCadastro')}
                     >
                     <Text style={styles.textButton}>Aceito o termo</Text>
                 </Pressable>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F89D5B',
         width: 350,
         marginTop: 10,
-        height: 40,
+        height: 60,
     },
     textButton: {
         fontSize: 16,

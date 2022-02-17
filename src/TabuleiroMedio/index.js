@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dimensions, FlatList, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, FlatList, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import api from "../services/api";
 import uri from "../services/server";
@@ -13,7 +13,8 @@ export default class Proposta extends Component{
         this.state = {
             itens: [],
             morador: this.props.route.params?.morador,
-            pontosProjeto: this.props.route.params?.morador.comunidade.projetos[0].pontuacao,
+            projeto: this.props.route.params?.projeto,
+            pontosProjeto: this.props.route.params?.projeto.pontuacao,
             spinner: false
         }
     }
@@ -22,7 +23,7 @@ export default class Proposta extends Component{
         return itens.map(function(item){
             return {
                 nome: item.item_nome, 
-                image: uri+"/psiu-gestor/storage/app/public/item/"+item.imagem, 
+                image: uri+"/../storage/app/public/item/"+item.imagem, 
                 pontos: item.pontuacao_item, 
                 descricao: item.description,
                 quantidade: item.quantidade,
@@ -34,11 +35,19 @@ export default class Proposta extends Component{
         this.setState({
             spinner: true
           })
-        const response = await api.get('tabuleiro/'+this.state.morador.comunidade.projetos[0].id)
-        this.setState({
-            itens: this.mapItens(response.data),
-            spinner: false
-        })
+        try{
+            const response = await api.get('tabuleiro/'+this.state.projeto.id)
+            this.setState({
+                itens: this.mapItens(response.data),
+                spinner: false
+            })
+        }catch(e){
+            this.props.navigation.goBack()
+          }finally{
+            this.setState({
+              spinner: false
+            })
+          }
     }
 
     setItem = (item) => {
