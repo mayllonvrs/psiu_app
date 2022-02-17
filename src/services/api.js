@@ -1,7 +1,8 @@
-import axios from "axios"; 
+import axios from "axios";
+import uri from "./server";
 
 const api = axios.create({
-    baseURL: 'http://192.168.0.114/psiu-gestor/public/api/'
+    baseURL: uri+'/api/'
 })
 
 export default api
